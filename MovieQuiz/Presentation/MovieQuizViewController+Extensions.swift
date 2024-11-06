@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
@@ -30,21 +30,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.alertPresenter = alertPresenter
         
         self.questionFactory?.requestNextQuestion()
-    }
-    
-    // MARK: - QuestionFactoryDelegate
-    
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        
-        currentQuestion = question
-        let viewModel = convert(model: question)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
     }
     
     // MARK: - Actions
@@ -112,7 +97,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             var text = "Ваш результат: \(correctAnswers)/\(questionsAmount)\n"
             text.append("Количество сыгранных квизов: \(statisticService?.gamesCount ?? 1)\n")
             text.append("Рекорд: \(bestGame.correct)/\(bestGame.total) (\(date))\n")
-            text.append("Средняя точность: \(String(format: "%.2f", statisticService?.totalAccuracy ?? 0))")
+            text.append("Средняя точность: \(String(format: "%.2f", statisticService?.totalAccuracy ?? 0))%")
             let result = QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть ещё раз")
             show(quiz: result)
         } else {
@@ -128,12 +113,32 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.correctAnswers = 0
             questionFactory?.requestNextQuestion()
         }
-        let alertModel = AlertModel(title: result.title, message: result.text, buttonText: result.buttonText, completion: completion)
+        let alertModel = AlertModel(
+            title: result.title,
+            message: result.text,
+            buttonText: result.buttonText,
+            completion: completion
+        )
         alertPresenter?.showAlert(with: alertModel)
     }
 }
 
-
+extension MovieQuizViewController: QuestionFactoryDelegate {
+    // MARK: - QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+    }
+}
 
 /*
  Mock-данные
