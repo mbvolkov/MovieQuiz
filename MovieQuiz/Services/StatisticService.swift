@@ -66,6 +66,4 @@ final class StatisticService: StatisticServiceProtocol {
             bestGame = gameResult
         }
     }
-    
-    
 }
