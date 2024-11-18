@@ -20,6 +20,7 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        presenter.viewController = self
         statisticService = StatisticService()
         
         let questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
@@ -35,17 +36,13 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction private func yesButtonClick(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClick()
     }
     
     @IBAction private func noButtonClick(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClick()
     }
     
     // MARK: - Private Functions
@@ -65,7 +62,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // покраска рамки
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
