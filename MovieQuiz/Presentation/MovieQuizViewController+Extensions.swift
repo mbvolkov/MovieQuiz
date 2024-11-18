@@ -10,7 +10,6 @@ final class MovieQuizViewController: UIViewController {
     private let presenter = MovieQuizPresenter()
     
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticServiceProtocol?
     
@@ -36,18 +35,16 @@ final class MovieQuizViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction private func yesButtonClick(_ sender: UIButton) {
-        presenter.currentQuestion = currentQuestion
         presenter.yesButtonClick()
     }
     
     @IBAction private func noButtonClick(_ sender: UIButton) {
-        presenter.currentQuestion = currentQuestion
         presenter.noButtonClick()
     }
     
     // MARK: - Private Functions
     // вывод на экран вопроса
-    private func show(quiz step: QuizStepViewModel) {
+    func show(quiz step: QuizStepViewModel) {
         // Сброс рамки после предыдущего вопроса
         // Из-за глюка на симуляторе 13 mini (после зеленой рамки
         // на следующем постере оставалась справа зеленая линия
@@ -73,7 +70,9 @@ final class MovieQuizViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            self.showNextQuestionOrResults()
+            self.presenter.correctAnswers = self.correctAnswers
+            self.presenter.questionFactory = self.questionFactory
+            self.presenter.showNextQuestionOrResults()
         }
     }
     
@@ -95,7 +94,7 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    private func show(quiz result: QuizResultsViewModel) {
+    func show(quiz result: QuizResultsViewModel) {
         let completion = { [weak self] in
             guard let self = self else { return }
             self.presenter.resetQuestionIndex()
@@ -143,16 +142,7 @@ extension MovieQuizViewController: QuestionFactoryDelegate {
     // MARK: - QuestionFactoryDelegate
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
-            return
-        }
-        
-        currentQuestion = question
-        let viewModel = presenter.convert(model: question)
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.show(quiz: viewModel)
-        }
+        presenter.didReceiveNextQuestion(question: question)
     }
     
     func didLoadDataFromServer() {
