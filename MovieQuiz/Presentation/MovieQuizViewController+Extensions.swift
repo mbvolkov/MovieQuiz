@@ -10,14 +10,12 @@ final class MovieQuizViewController: UIViewController {
     private var presenter: MovieQuizPresenter!
     
     private var alertPresenter: AlertPresenterProtocol?
-    private var statisticService: StatisticServiceProtocol?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter = MovieQuizPresenter(viewController: self)
-        statisticService = StatisticService()
         
         let alertPresenter = AlertPresenter()
         alertPresenter.viewController = self
@@ -66,28 +64,20 @@ final class MovieQuizViewController: UIViewController {
     // переход дальше
     private func showNextQuestionOrResults() {
         if presenter.isLastQuestion() {
-            statisticService?.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
-            guard let bestGame = statisticService?.bestGame else { return }
-            let date = bestGame.date.dateTimeString
-            var text = "Ваш результат: \(presenter.correctAnswers)/\(presenter.questionsAmount)\n"
-            text.append("Количество сыгранных квизов: \(statisticService?.gamesCount ?? 1)\n")
-            text.append("Рекорд: \(bestGame.correct)/\(bestGame.total) (\(date))\n")
-            text.append("Средняя точность: \(String(format: "%.2f", statisticService?.totalAccuracy ?? 0))%")
-            let result = QuizResultsViewModel(title: "Этот раунд окончен!", text: text, buttonText: "Сыграть ещё раз")
-            show(quiz: result)
         } else {
             presenter.switchToNextQuestion()
         }
     }
     
     func show(quiz result: QuizResultsViewModel) {
+        let message = presenter.makeResultsMessage()
         let completion = { [weak self] in
             guard let self = self else { return }
             self.presenter.restartGame()
         }
         let alertModel = AlertModel(
             title: result.title,
-            message: result.text,
+            message: message,
             buttonText: result.buttonText,
             completion: completion
         )

@@ -12,12 +12,16 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     private var currentQuestionIndex = 0
     var correctAnswers = 0
     
-    var questionFactory: QuestionFactoryProtocol?
+    private weak var viewController: MovieQuizViewController?
+    private var questionFactory: QuestionFactoryProtocol?
+    private var statisticService: StatisticServiceProtocol!
     var currentQuestion: QuizQuestion?
-    weak var viewController: MovieQuizViewController?
+    
     
     init(viewController: MovieQuizViewController) {
         self.viewController = viewController
+        
+        statisticService = StatisticService()
         
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         questionFactory?.loadData()
@@ -30,6 +34,20 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
         return questionStep
+    }
+    
+    func makeResultsMessage() -> String {
+        statisticService.store(correct: correctAnswers, total: questionsAmount)
+        
+        let bestGame = statisticService.bestGame
+        let date = bestGame.date.dateTimeString
+        
+        var text = "Ваш результат: \(correctAnswers)/\(questionsAmount)\n"
+        text.append("Количество сыгранных квизов: \(statisticService.gamesCount)\n")
+        text.append("Рекорд: \(bestGame.correct)/\(bestGame.total) (\(date))\n")
+        text.append("Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%")
+        
+        return text
     }
     
     func isLastQuestion() -> Bool {
