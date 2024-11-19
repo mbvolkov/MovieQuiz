@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
@@ -49,13 +49,6 @@ final class MovieQuizViewController: UIViewController {
         counterLabel.text = step.questionNumber
     }
     
-    // покраска рамки
-    func highlightImageBorder(isCorrect: Bool) {
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-    }
-    
     func show(quiz result: QuizResultsViewModel) {
         let message = presenter.makeResultsMessage()
         let completion = { [weak self] in
@@ -69,6 +62,13 @@ final class MovieQuizViewController: UIViewController {
             completion: completion
         )
         alertPresenter?.showAlert(with: alertModel)
+    }
+    
+    // покраска рамки
+    func highlightImageBorder(isCorrectAnswer: Bool) {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
     }
     
     //MARK: - Network actions visual presentation

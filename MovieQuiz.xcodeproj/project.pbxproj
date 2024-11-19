@@ -32,6 +32,8 @@
 		FA8FBE0D2CD7C03300EF18E8 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8FBE0C2CD7C03300EF18E8 /* QuestionFactoryDelegate.swift */; };
 		FA8FBE0F2CD7DBC200EF18E8 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8FBE0E2CD7DBC200EF18E8 /* AlertModel.swift */; };
 		FA8FBE112CD7DBDD00EF18E8 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA8FBE102CD7DBDD00EF18E8 /* AlertPresenter.swift */; };
+		FA9A24BD2CECA08500D9B33C /* MovieQuizPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A24BC2CECA08500D9B33C /* MovieQuizPresenterTests.swift */; };
+		FA9A24BF2CECA18000D9B33C /* MovieQuizViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9A24BE2CECA18000D9B33C /* MovieQuizViewControllerProtocol.swift */; };
 		FAC654EC2CC92C87002A1D13 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAC654EA2CC92C87002A1D13 /* YS Display-Medium.ttf */; };
 		FAC654ED2CC92C87002A1D13 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FAC654EB2CC92C87002A1D13 /* YS Display-Bold.ttf */; };
 		FADB223C2CEA02DB00E37574 /* MoviesLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB223B2CEA02DB00E37574 /* MoviesLoaderTests.swift */; };
@@ -85,6 +87,8 @@
 		FA8FBE0C2CD7C03300EF18E8 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		FA8FBE0E2CD7DBC200EF18E8 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		FA8FBE102CD7DBDD00EF18E8 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+		FA9A24BC2CECA08500D9B33C /* MovieQuizPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenterTests.swift; sourceTree = "<group>"; };
+		FA9A24BE2CECA18000D9B33C /* MovieQuizViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizViewControllerProtocol.swift; sourceTree = "<group>"; };
 		FAC654EA2CC92C87002A1D13 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		FAC654EB2CC92C87002A1D13 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		FADB223B2CEA02DB00E37574 /* MoviesLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoaderTests.swift; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				FA8FBE102CD7DBDD00EF18E8 /* AlertPresenter.swift */,
 				FA7F84192CEBC27C00725963 /* MovieQuizPresenter.swift */,
+				FA9A24BE2CECA18000D9B33C /* MovieQuizViewControllerProtocol.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -237,6 +242,7 @@
 			children = (
 				FA45EA512CE9008C008D64F5 /* ArrayTests.swift */,
 				FADB223B2CEA02DB00E37574 /* MoviesLoaderTests.swift */,
+				FA9A24BC2CECA08500D9B33C /* MovieQuizPresenterTests.swift */,
 			);
 			path = MovieQuizTests;
 			sourceTree = "<group>";
@@ -377,6 +383,7 @@
 			files = (
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
 				FA4F89ED2CE11D0800ED779C /* MostPopularMovies.swift in Sources */,
+				FA9A24BF2CECA18000D9B33C /* MovieQuizViewControllerProtocol.swift in Sources */,
 				AD1ABAB62831907B00B3E448 /* MovieQuizViewController+Extensions.swift in Sources */,
 				FADB223E2CEA073400E37574 /* StubNetworkClient.swift in Sources */,
 				FA50C2582CD413C8009CE362 /* QuizQuestion.swift in Sources */,
@@ -414,6 +421,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA45EA522CE9008C008D64F5 /* ArrayTests.swift in Sources */,
+				FA9A24BD2CECA08500D9B33C /* MovieQuizPresenterTests.swift in Sources */,
 				FADB223C2CEA02DB00E37574 /* MoviesLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

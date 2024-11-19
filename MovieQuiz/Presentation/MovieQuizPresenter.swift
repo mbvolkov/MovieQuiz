@@ -12,13 +12,13 @@ final class MovieQuizPresenter {
     private var currentQuestionIndex = 0
     var correctAnswers = 0
     
-    private weak var viewController: MovieQuizViewController?
+    private weak var viewController: MovieQuizViewControllerProtocol?
     private var questionFactory: QuestionFactoryProtocol?
     private var statisticService: StatisticServiceProtocol!
     var currentQuestion: QuizQuestion?
     
     
-    init(viewController: MovieQuizViewController) {
+    init(viewController: MovieQuizViewControllerProtocol) {
         self.viewController = viewController
         
         statisticService = StatisticService()
@@ -56,7 +56,7 @@ final class MovieQuizPresenter {
         questionFactory?.requestNextQuestion()
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+    func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
             image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
@@ -90,7 +90,7 @@ final class MovieQuizPresenter {
     private func proceedWithAnswer(isCorrect: Bool) {
         didAnswer(isCorrectAnswer: isCorrect)
         
-        viewController?.highlightImageBorder(isCorrect: isCorrect)
+        viewController?.highlightImageBorder(isCorrectAnswer: isCorrect)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
