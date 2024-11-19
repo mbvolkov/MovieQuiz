@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MovieQuizPresenter: QuestionFactoryDelegate {
+final class MovieQuizPresenter {
     let questionsAmount = 10
     private var currentQuestionIndex = 0
     var correctAnswers = 0
@@ -28,12 +28,12 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         viewController.showLoadingIndicator()
     }
     
-    func convert(model: QuizQuestion) -> QuizStepViewModel {
-        let questionStep = QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-        return questionStep
+    func yesButtonClick() {
+        didAnswer(isYes: true)
+    }
+    
+    func noButtonClick() {
+        didAnswer(isYes: false)
     }
     
     func makeResultsMessage() -> String {
@@ -50,32 +50,32 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         return text
     }
     
-    func isLastQuestion() -> Bool {
-        currentQuestionIndex == questionsAmount - 1
-    }
-    
     func restartGame() {
         currentQuestionIndex = 0
         correctAnswers = 0
         questionFactory?.requestNextQuestion()
     }
     
-    func switchToNextQuestion() {
+    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+        let questionStep = QuizStepViewModel(
+            image: UIImage(data: model.image) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        return questionStep
+    }
+    
+    private func isLastQuestion() -> Bool {
+        currentQuestionIndex == questionsAmount - 1
+    }
+    
+    private func switchToNextQuestion() {
         currentQuestionIndex += 1
     }
     
-    func didAnswer(isCorrectAnswer: Bool) {
+    private func didAnswer(isCorrectAnswer: Bool) {
         if isCorrectAnswer {
             correctAnswers += 1
         }
-    }
-    
-    func yesButtonClick() {
-        didAnswer(isYes: true)
-    }
-    
-    func noButtonClick() {
-        didAnswer(isYes: false)
     }
     
     private func didAnswer(isYes: Bool) {
@@ -98,7 +98,7 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func proceedToNextQuestionOrResults() {
+    private func proceedToNextQuestionOrResults() {
         if self.isLastQuestion() {
             let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
             let viewModel = QuizResultsViewModel(
@@ -111,8 +111,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
             questionFactory?.requestNextQuestion()
         }
     }
-    
+}
     // MARK: - QuestionFactoryDelegate
+extension MovieQuizPresenter: QuestionFactoryDelegate {
     
     func didLoadDataFromServer() {
         viewController?.hideLoadingIndicator()
@@ -123,7 +124,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         let message = error.localizedDescription
         viewController?.showNetworkError(message: message)
     }
-    
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
