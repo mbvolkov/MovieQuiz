@@ -50,23 +50,10 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // покраска рамки
-    func showAnswerResult(isCorrect: Bool) {
+    func highlightImageBorder(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
-            self.presenter.showNextQuestionOrResults()
-        }
-    }
-    
-    // переход дальше
-    private func showNextQuestionOrResults() {
-        if presenter.isLastQuestion() {
-        } else {
-            presenter.switchToNextQuestion()
-        }
     }
     
     func show(quiz result: QuizResultsViewModel) {
